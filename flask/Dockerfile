@@ -1,17 +1,16 @@
-FROM ubuntu
+FROM ubuntu:latest
 
 WORKDIR /app
 
-COPY flask /app/
+COPY proj /app/
+COPY requirements.txt /app/
 
-RUN apt-get update && apt-get install -y python3 python3-pip python3-venv
-
-SHELL ["/bin/bash", "-c"]
+RUN apt-get update && \
+    apt-get install -y python3 python3-pip python3-venv && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN python3 -m venv venv1 && \
-source venv1/bin/activate && \
-pip install --no-cache-dir -r requirements.txt
+    /app/venv1/bin/pip install --upgrade pip && \
+    /app/venv1/bin/pip install -r requirements.txt
 
-EXPOSE 5000
-
-CMD source venv1/bin/activate && python3 manage.py runserver 0.0.0.0:5000
+CMD ["/bin/bash", "-c", "source /app/venv1/bin/activate && python3 /app/app.py"]
