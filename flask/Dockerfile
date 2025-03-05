@@ -2,7 +2,7 @@ FROM ubuntu:latest
 
 WORKDIR /app
 
-COPY proj /app/
+COPY docker_flask /app/
 COPY requirements.txt /app/
 
 RUN apt-get update && \
